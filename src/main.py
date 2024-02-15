@@ -26,6 +26,7 @@ class Main:
         while self.running:
             # show methods
             game.show_bg(screen)
+            game.show_hover(screen)
             game.show_last_move(screen)
             game.show_pieces(screen)
             game.show_moves(screen)
@@ -48,24 +49,19 @@ class Main:
                         piece = board.squares[clicked_row][clicked_col].piece
                         # check if valid piece and its color
                         if piece.color == game.next_player:
-                            board.calc_moves(piece, clicked_row, clicked_col)
+                            board.calc_moves(piece, clicked_row, clicked_col, bool)
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
-                            # show method
-                            '''game.show_bg(screen)
-                            game.show_moves(screen)
-                            game.show_pieces(screen)'''
-                        
-                    
                 
                 # mouse motion
                 elif event.type == pygame.MOUSEMOTION:
+                    motion_row = event.pos[1] // SQSIZE
+                    motion_col = event.pos[0] // SQSIZE
+                    
+                    # hover
+                    game.set_hover(motion_row, motion_col)
                     if dragger.dragging:
                         dragger.update_mouse(event.pos)
-                        # show methods
-                        '''game.show_bg(screen)
-                        game.show_pieces(screen)
-                        dragger.update_blit(screen)'''
                 
                 # click release
                 elif event.type == pygame.MOUSEBUTTONUP:
@@ -83,15 +79,31 @@ class Main:
                         
                         # checks if possible move is a valid move
                         if board.valid_move(dragger.piece, move):
+                            captured = board.squares[released_row][released_col].has_piece()
                             board.move(dragger.piece, move)
+                            board.set_true_en_passant(dragger.piece)
+                            game.play_sound(captured)
                             # show methods
                             game.show_bg(screen)
                             game.show_last_move(screen)
                             game.show_pieces(screen)
                             game.next_turn()
                             
+                            
                     dragger.undrag_piece()
                 
+                elif event.type == pygame.KEYDOWN:
+                    
+                    if event.key == pygame.K_t:
+                        game.change_theme()
+
+                    if event.key == pygame.K_r:
+                        game.reset()
+                        game = self.game
+                        board = self.game.board
+                        dragger = self.game.dragger
+                    
+                    
                 # Quit the application
                 if event.type == pygame.QUIT:
                     self.running = False  # Set running to False to exit the loop
