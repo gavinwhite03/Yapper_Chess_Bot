@@ -7,6 +7,7 @@ from config import Config
 from square import Square
 
 class Game():
+
     def __init__(self):
         self.next_player = 'white'
         self.hovered_sq = None
@@ -87,6 +88,7 @@ class Game():
     # other methods
     def next_turn(self):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
+        self.board.turn_counter += 1
         
     def set_hover(self, row, col):
         self.hovered_sq = self.board.squares[row][col]

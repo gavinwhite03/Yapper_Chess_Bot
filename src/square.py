@@ -12,6 +12,12 @@ class Square():
     def __eq__(self, other):
         return self.row == other.row and self.col == other.col
     
+    def __str__(self):
+        row_index = 8 - self.row  # Calculate the row index (1-based) from the bottom of the board
+        col_letter = chr(ord('a') + self.col)  # Convert column index to letter
+        return f"Square({col_letter}{row_index})"
+
+    
     
     def has_piece(self):
         return self.piece != None

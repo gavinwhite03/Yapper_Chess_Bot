@@ -32,13 +32,16 @@ class Main:
             game.show_moves(screen)
             
             
+            
             if dragger.dragging:
                 dragger.update_blit(screen)
+                
             
             for event in pygame.event.get():
                 
                 # click
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    board.calculate_all_moves()
                     dragger.update_mouse(event.pos)
                     
                     clicked_row = dragger.mouseY // SQSIZE
@@ -49,6 +52,7 @@ class Main:
                         piece = board.squares[clicked_row][clicked_col].piece
                         # check if valid piece and its color
                         if piece.color == game.next_player:
+                            # board.set_false_en_passant()
                             board.calc_moves(piece, clicked_row, clicked_col, bool)
                             dragger.save_initial(event.pos)
                             dragger.drag_piece(piece)
@@ -81,13 +85,15 @@ class Main:
                         if board.valid_move(dragger.piece, move):
                             captured = board.squares[released_row][released_col].has_piece()
                             board.move(dragger.piece, move)
-                            board.set_true_en_passant(dragger.piece)
+                            
+                            board.set_true_en_passant(dragger.piece, dragger.initial_row, released_row, dragger.initial_col)
                             game.play_sound(captured)
                             # show methods
                             game.show_bg(screen)
                             game.show_last_move(screen)
                             game.show_pieces(screen)
                             game.next_turn()
+                            
                             
                             
                     dragger.undrag_piece()
