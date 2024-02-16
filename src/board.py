@@ -279,7 +279,13 @@ class Board():
                         for c in range(1, 4):
                             if self.squares[row][c].has_piece():
                                 break
-                            if c == 3:
+                            initial = Square(row, col)
+                            final = Square(row, 3)
+                            move = Move(initial, final)
+                            test2_initial = Square(row, col)
+                            test2_final = Square(row, 2)
+                            test_move2 = Move(test2_initial, test2_final)
+                            if c == 3 and not self.in_check(piece, move) and not self.in_check(piece, test_move2):
                                 piece.left_rook = left_rook
                                 initial = Square(row, 0)
                                 final = Square(row, 3)
@@ -304,7 +310,10 @@ class Board():
                             for c in range(5, 7):
                                 if self.squares[row][c].has_piece():
                                     break
-                                if c == 6 and c not in self.all_possible_moves:
+                                initial = Square(row, col)
+                                final = Square(row, 5)
+                                move = Move(initial, final)
+                                if c == 6 and not self.in_check(piece, move):
                                     piece.right_rook = right_rook
                                     initial = Square(row, 7)
                                     final = Square(row, 5)
