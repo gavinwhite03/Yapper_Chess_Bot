@@ -1,11 +1,13 @@
 # Yapper_Chess_Bot
 **Overview**
-This is a Python-based chess application designed to facilitate playing chess between two players on a graphical interface. The application implements the standard rules of chess, including movement restrictions, check, checkmate, and special moves such as castling and en passant.
+This is a Python-based chess application designed to facilitate playing chess between two players, two AI's, or one player and one AI on a graphical interface. The application implements the standard rules of chess, including movement restrictions, check, checkmate, and special moves such as castling and en passant.
 
 **Features**
 Graphical user interface for playing chess.
 Standard chess rules implementation.
 Ability to play against another human player.
+Ability to play against another and AI player.
+Ability to play two AI's against eachother.
 Highlights legal moves for each piece.
 Supports castling, pawn promotion, and en passant.
 Check and checkmate detection.

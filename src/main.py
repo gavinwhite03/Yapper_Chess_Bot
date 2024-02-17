@@ -5,6 +5,7 @@ from const import *
 from game import Game
 from square import Square
 from move import Move
+from ai import AI
 
 class Main:
     
@@ -21,6 +22,7 @@ class Main:
         screen = self.screen
         board = self.game.board
         dragger = self.game.dragger
+        need_move_calculation = True
         
         
         while self.running:
@@ -31,12 +33,13 @@ class Main:
             game.show_pieces(screen)
             game.show_moves(screen)
             
-            # check if game is over
-            game.is_game_over()
-            
             if game.game_over:
                 game.show_game_over(game.is_game_over())
             
+            if board.turn_counter % 2 == 0:
+                ai = AI(board, 'black', game)
+                ai.make_random_move('black')
+                self.game.next_turn()
             
             if dragger.dragging:
                 dragger.update_blit(screen)

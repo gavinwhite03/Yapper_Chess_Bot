@@ -139,6 +139,7 @@ class Game():
     def next_turn(self):
         self.next_player = 'white' if self.next_player == 'black' else 'black'
         self.board.turn_counter += 1
+        self.is_game_over()
         print(self.board.turn_counter)
         
     def set_hover(self, row, col):
