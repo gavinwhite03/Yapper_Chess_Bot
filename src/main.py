@@ -31,6 +31,11 @@ class Main:
             game.show_pieces(screen)
             game.show_moves(screen)
             
+            # check if game is over
+            game.is_game_over()
+            
+            if game.game_over:
+                game.show_game_over(game.is_game_over())
             
             
             if dragger.dragging:
@@ -41,7 +46,6 @@ class Main:
                 
                 # click
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    board.calculate_all_moves()
                     dragger.update_mouse(event.pos)
                     
                     clicked_row = dragger.mouseY // SQSIZE

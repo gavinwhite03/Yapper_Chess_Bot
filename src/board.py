@@ -15,15 +15,48 @@ class Board():
         self._add_piece('white')
         self._add_piece('black')
     
-    def calculate_all_moves(self):
-        self.all_possible_moves = []
+    def calculate_all_moves_white(self):
+        all_possible_moves_white = []
         temp_board = copy.deepcopy(self)
         for row in range(ROWS):
             for col in range(COLS):
                 if temp_board.squares[row][col].has_piece():
                     p = temp_board.squares[row][col].piece
-                    temp_board.calc_moves(p, row, col)
-                    self.all_possible_moves.append(p.moves)
+                    if p.color == 'white':
+                        temp_board.calc_moves(p, row, col)
+                        all_possible_moves_white.append(p.moves)
+        return all_possible_moves_white
+
+    def calculate_all_moves_black(self):
+        all_possible_moves_black = []
+        temp_board = copy.deepcopy(self)
+        for row in range(ROWS):
+            for col in range(COLS):
+                if temp_board.squares[row][col].has_piece():
+                    p = temp_board.squares[row][col].piece
+                    if p.color == 'black':
+                        temp_board.calc_moves(p, row, col)
+                        all_possible_moves_black.append(p.moves)
+        return all_possible_moves_black
+
+
+    def get_black_king(self):
+        for row in range(ROWS):
+            for col in range(COLS):
+                if self.squares[row][col].has_piece():
+                    piece = self.squares[row][col].piece
+                    if isinstance(piece, King) and piece.color == 'black':
+                        return piece
+        return None
+    
+    def get_white_king(self):
+        for row in range(ROWS):
+            for col in range(COLS):
+                if self.squares[row][col].has_piece():
+                    piece = self.squares[row][col].piece
+                    if isinstance(piece, King) and piece.color == 'white':
+                        return piece
+        return None
                     
     def opponent_pieces(self, color):
         opponent_color = 'black' if color == 'white' else 'white'
@@ -36,6 +69,8 @@ class Board():
         return opponent_pieces
                            
     def move(self, piece, move, testing=False):
+        if move is None:
+            return
         initial = move.initial
         final = move.final
         en_passant_empty = self.squares[final.row][final.col].is_empty()
